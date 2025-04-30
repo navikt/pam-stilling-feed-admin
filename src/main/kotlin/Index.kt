@@ -12,7 +12,7 @@ fun templateHTML(
         meta { charset = "UTF-8" }
         link {
             rel = "icon"
-            href = "/favicon.png"
+            href = "/public/favicon.png"
         }
         link {
             rel = "stylesheet"
@@ -20,7 +20,7 @@ fun templateHTML(
         }
         link {
             rel = "stylesheet"
-            href = "/style.css"
+            href = "/public/style.css"
         }
         script {
             src = "https://unpkg.com/htmx.org@2.0.4"

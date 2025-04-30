@@ -64,13 +64,20 @@ fun startJavalin(
         config.router.ignoreTrailingSlashes = true
         config.router.treatMultipleSlashesAsSingleSlash = true
         config.requestLogger.http { ctx, ms ->
-            if (!(ctx.path().endsWith("/internal/isReady") || ctx.path().endsWith("/internal/isAlive") || ctx.path()
-                    .endsWith("/internal/prometheus"))
+            if (!(ctx.path().endsWith("/internal/isReady")
+                        || ctx.path().endsWith("/internal/isAlive")
+                        || ctx.path().endsWith("/internal/prometheus")
+                        || ctx.path().contains("/public/")
+                        )
             ) logRequest(ctx, ms, requestLogger)
         }
         config.http.defaultContentType = "application/json"
         config.jsonMapper(jsonMapper)
         config.registerPlugin(micrometerPlugin)
+        config.staticFiles.add({ staticFiles ->
+            staticFiles.directory = "/public"
+            staticFiles.hostedPath = "/public"
+        })
     }.beforeMatched { ctx ->
         if (ctx.routeRoles().isEmpty()) {
             return@beforeMatched
