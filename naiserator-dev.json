@@ -1,0 +1,9 @@
+{
+  "ingress": [
+    "https://pam-stilling-feed-admin.intern.dev.nav.no"
+  ],
+  "min_replicas": 1,
+  "max_replicas": 1,
+  "azure_ad_tenant": "trygdeetaten.no",
+  "stilling_feed_base_url": "https://pam-stilling-feed.intern.dev.nav.no"
+}
