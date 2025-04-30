@@ -7,7 +7,7 @@ plugins {
 }
 
 application {
-    mainClass.set("no.nav.pam.stilling.feed.ApplicationKt")
+    mainClass.set("no.nav.pam.stilling.feed.admin.ApplicationKt")
 }
 
 repositories {
