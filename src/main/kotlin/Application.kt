@@ -43,7 +43,7 @@ fun ApplicationContext.startApp(): Javalin {
 }
 
 private fun ApplicationContext.setupAllRoutes(javalin: Javalin) {
-//    naisController.setupRoutes(javalin)
+    naisController.setupRoutes(javalin)
     rootRouter.setupRoutes(javalin)
     konsumentRouter.setupRoutes(javalin)
     tokenRouter.setupRoutes(javalin)

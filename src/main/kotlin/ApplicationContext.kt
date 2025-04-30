@@ -16,6 +16,8 @@ import io.micrometer.prometheusmetrics.PrometheusConfig
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import no.nav.pam.stilling.feed.admin.konsument.KonsumentRouter
 import no.nav.pam.stilling.feed.admin.konsument.KonsumentService
+import no.nav.pam.stilling.feed.admin.nais.HealthService
+import no.nav.pam.stilling.feed.admin.nais.NaisController
 import no.nav.pam.stilling.feed.admin.token.TokenRouter
 import no.nav.pam.stilling.feed.admin.token.TokenService
 import java.net.http.HttpClient
@@ -42,6 +44,10 @@ open class ApplicationContext(env: Map<String, String>) {
         .version(HttpClient.Version.HTTP_1_1)
         .followRedirects(HttpClient.Redirect.ALWAYS)
         .build()
+
+    val healthService = HealthService()
+
+    val naisController = NaisController(healthService, prometheusRegistry)
 
     val stillingFeedKlient = StillingFeedKlient(
         stillingFeedBaseUrl = env.getValue("STILLING_FEED_BASE_URL"),
