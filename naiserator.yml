@@ -53,6 +53,8 @@ spec:
       claims:
         extra:
           - "NAVident"
+  envFrom:
+    - secret: pam-stilling-feed-admin-token
   env:
     - name: STILLING_FEED_BASE_URL
       value: {{ stilling_feed_base_url }}
