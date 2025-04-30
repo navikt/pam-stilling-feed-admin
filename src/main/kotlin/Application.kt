@@ -2,20 +2,29 @@ package no.nav.pam.stilling.feed.admin
 
 import io.javalin.Javalin
 import io.javalin.http.Context
+import io.javalin.http.HttpStatus
 import io.javalin.json.JavalinJackson
 import io.javalin.micrometer.MicrometerPlugin
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import net.logstash.logback.argument.StructuredArguments.kv
+import no.nav.pam.stilling.feed.admin.sikkerhet.ForbiddenException
 import no.nav.pam.stilling.feed.admin.sikkerhet.JavalinAccessManager
+import no.nav.pam.stilling.feed.admin.sikkerhet.UnauthorizedException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.util.*
 
+val log = LoggerFactory.getLogger("no.nav.pam.stilling.feed.admin")
+
 fun main() {
-    val env = System.getenv()
-    val appContext = ApplicationContext(env)
-    appContext.startApp()
+    try {
+        val env = System.getenv()
+        val appContext = ApplicationContext(env)
+        appContext.startApp()
+    } catch (e: Exception) {
+        log.error("Uventet feil ved oppstart av applikasjonen: ${e.message}", e)
+    }
 }
 
 fun ApplicationContext.startApp(): Javalin {
@@ -47,7 +56,6 @@ fun startJavalin(
     accessManager: JavalinAccessManager,
 ): Javalin {
     val requestLogger = LoggerFactory.getLogger("access")
-    val log = LoggerFactory.getLogger("no.nav.pam.stilling.feed.admin")
     val micrometerPlugin = MicrometerPlugin { micrometerConfig ->
         micrometerConfig.registry = meterRegistry
     }
@@ -74,6 +82,21 @@ fun startJavalin(
         MDC.put("TraceId", callId)
     }.after {
         MDC.remove("TraceId")
+    }.exception(ClassNotFoundException::class.java) { e, ctx ->
+        log.warn("NotFoundException: ${e.message}", e)
+        ctx.status(HttpStatus.NOT_FOUND).result(e.message ?: "")
+    }.exception(ForbiddenException::class.java) { e, ctx ->
+        log.warn("ForbiddenException: ${e.message}", e)
+        ctx.status(HttpStatus.FORBIDDEN).result(e.message ?: "")
+    }.exception(UnauthorizedException::class.java) { e, ctx ->
+        log.warn("UnauthorizedException: ${e.message}", e)
+        ctx.status(HttpStatus.UNAUTHORIZED).result(e.message ?: "")
+    }.exception(IllegalArgumentException::class.java) { e, ctx ->
+        log.warn("IllegalArgumentException: ${e.message}", e)
+        ctx.status(HttpStatus.BAD_REQUEST).result(e.message ?: "")
+    }.exception(Exception::class.java) { e, ctx ->
+        log.error("Exception: ${e.message}", e)
+        ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result(e.message ?: "")
     }.start(port)
 }
 

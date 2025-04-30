@@ -9,3 +9,24 @@ class JavalinAccessManager {
         TODO("Logikk for tilgangsstyring")
     }
 }
+
+class ForbiddenException : RuntimeException {
+    constructor(cause: Throwable) : super(cause)
+    constructor(msg: String) : super(msg)
+    constructor(msg: String, cause: Throwable) : super(msg, cause)
+    constructor() : super()
+}
+
+class UnauthorizedException : RuntimeException {
+    constructor(cause: Throwable) : super(cause)
+    constructor(msg: String) : super(msg)
+    constructor(msg: String, cause: Throwable) : super(msg, cause)
+    constructor() : super()
+}
+
+class NotFoundException : RuntimeException {
+    constructor(cause: Throwable) : super(cause)
+    constructor(msg: String) : super(msg)
+    constructor(msg: String, cause: Throwable) : super(msg, cause)
+    constructor() : super()
+}
