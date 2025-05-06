@@ -1,6 +1,7 @@
 package no.nav.pam.stilling.feed.admin.konsument
 
 import kotlinx.html.*
+import no.nav.pam.stilling.feed.admin.komponenter.Input
 
 fun FlowContent.KonsumentForm() {
     val formFelt = listOf(
@@ -17,12 +18,9 @@ fun FlowContent.KonsumentForm() {
         attributes["hx-swap"] = "outerHTML"
 
         formFelt.forEach { (name, label) ->
-            label {
-                htmlFor = name
-                +"$label:"
-            }
-            input(type = InputType.text, name = name) {
-                id = name
+            Input {
+                this.name = name
+                this.label = "$label:"
                 required = true
             }
         }

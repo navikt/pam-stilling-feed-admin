@@ -1,6 +1,7 @@
 package no.nav.pam.stilling.feed.admin.token
 
 import kotlinx.html.*
+import no.nav.pam.stilling.feed.admin.komponenter.Input
 
 fun FlowContent.GenererTokenForm() {
     form {
@@ -9,27 +10,18 @@ fun FlowContent.GenererTokenForm() {
         attributes["hx-target"] = "#genererTokenForm"
         attributes["hx-swap"] = "outerHTML"
 
-        label {
-            htmlFor = "konsumentId"
-            +"Konsument ID:"
-        }
-        input {
-            type = InputType.text
+        Input {
             name = "konsumentId"
-            id = "konsumentId"
+            label = "Konsument ID:"
             required = true
             autoFocus = true
         }
 
-        label {
-            htmlFor = "expires"
-            +"Utløpsdato: (La være tom for ingen utløpsdato)"
-        }
-        input {
-            type = InputType.dateTimeLocal
+        Input {
             name = "expires"
+            label = "Utløpsdato: (La være tom for ingen utløpsdato)"
+            type = InputType.dateTimeLocal
             required = false
-            id = "expires"
         }
 
         button {

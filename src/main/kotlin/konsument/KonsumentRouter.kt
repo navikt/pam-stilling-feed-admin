@@ -4,11 +4,17 @@ import io.javalin.Javalin
 import io.javalin.http.Context
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.util.*
 
 class KonsumentRouter(
     private val konsumentService: KonsumentService
 ) {
+    companion object {
+        private val log: Logger = LoggerFactory.getLogger(KonsumentRouter::class.java)
+    }
+
     fun setupRoutes(javalin: Javalin) {
         javalin.post("/konsument/opprett") { håndterOpprettKonsument(it) }
         javalin.get("/konsument/form") { håndterKonsumentForm(it) }
@@ -42,6 +48,7 @@ class KonsumentRouter(
 
     private fun håndterFinnKonsument(ctx: Context) {
         var spørring = ctx.queryParam("q")
+        log.info("Mottar søk etter konsument med spørring: $spørring, ${ctx.body()}")
         if (spørring.isNullOrBlank()) {
             ctx.html(createHTML().span {
                 KonsumentTabell(konsumenter)
