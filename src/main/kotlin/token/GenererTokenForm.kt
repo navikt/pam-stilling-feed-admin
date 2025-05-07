@@ -1,7 +1,7 @@
 package no.nav.pam.stilling.feed.admin.token
 
 import kotlinx.html.*
-import no.nav.pam.stilling.feed.admin.komponenter.Input
+import no.nav.pam.stilling.feed.admin.komponenter.*
 
 fun FlowContent.GenererTokenForm() {
     form {
@@ -24,9 +24,10 @@ fun FlowContent.GenererTokenForm() {
             required = false
         }
 
-        button {
+        Button {
             type = ButtonType.submit
-            +"Generer token"
+            variant = ButtonVariant.PRIMARY
+            label = "Generer token"
         }
     }
 }

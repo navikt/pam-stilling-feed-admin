@@ -17,24 +17,36 @@ class InputProps {
 fun FlowContent.Input(block: InputProps.() -> Unit) {
     val props = InputProps().apply(block)
 
-    if (props.label.isNotEmpty()) {
-        label {
-            htmlFor = props.name
-            +props.label
-        }
-    }
+    div {
+        style = """
+            width: inherit;
+            display: flex;
+            flex-direction: column;
+            ${if (props.label.isEmpty()) "align-items: center;" else "align-items: flex-start;"}
+        """.trimIndent()
 
-    input {
-        id = props.id ?: props.name
-        name = props.name
-        type = props.type
-        required = props.required
-        autoFocus = props.autoFocus
-        props.placeholder?.let { placeholder = it }
-        props.value?.let { value = it }
-        props.attributes.forEach { (key, value) ->
-            attributes[key] = value
+        if (props.label.isNotEmpty()) {
+            label {
+                classes = setOf("navds-label")
+                htmlFor = props.name
+                +props.label
+            }
         }
+
+        input {
+            id = props.id ?: props.name
+            classes = setOf("navds-text-field__input")
+            name = props.name
+            type = props.type
+            required = props.required
+            autoFocus = props.autoFocus
+            props.placeholder?.let { placeholder = it }
+            props.value?.let { value = it }
+            props.attributes.forEach { (key, value) ->
+                attributes[key] = value
+            }
+        }
+
     }
 }
 

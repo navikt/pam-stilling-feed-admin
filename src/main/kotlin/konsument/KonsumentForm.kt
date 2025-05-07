@@ -1,6 +1,7 @@
 package no.nav.pam.stilling.feed.admin.konsument
 
 import kotlinx.html.*
+import no.nav.pam.stilling.feed.admin.komponenter.Button
 import no.nav.pam.stilling.feed.admin.komponenter.Input
 
 fun FlowContent.KonsumentForm() {
@@ -22,11 +23,12 @@ fun FlowContent.KonsumentForm() {
                 this.name = name
                 this.label = "$label:"
                 required = true
+                autoFocus = name == formFelt.first().first
             }
         }
-        button {
+        Button {
             type = ButtonType.submit
-            +"Legg til konsument"
+            label = "Legg til konsument"
         }
     }
 }
