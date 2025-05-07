@@ -1,3 +1,7 @@
+html, body {
+    height: 100%;
+}
+
 body {
     background-color: #f0f0f0;
     margin: 0;
@@ -9,11 +13,13 @@ body {
 
 main {
     display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
     flex-direction: column;
     align-items: center;
     width: 100%;
     max-width: 1200px;
-    padding: 2rem;
 }
 
 nav {
@@ -80,7 +86,7 @@ table {
     }
 
     tr:hover {
-        background-color: #f1f1f1;
+        background-color: #f2f2f2 !important;
     }
 
     tr:nth-child(even) {

@@ -14,10 +14,16 @@ fun FlowContent.KonsumentTabell(konsumenter: List<KonsumentDTO>) {
         }
         konsumenter.forEach { konsument ->
             tr {
-                td { +konsument.id.toString() }
+                td {
+                    style = "min-width: 300px;"
+                    code { +konsument.id.toString() }
+                }
                 td { +konsument.identifikator }
                 td { +konsument.email }
-                td { +konsument.telefon }
+                td {
+                    style = "min-width: 96px;"
+                    +konsument.telefon
+                }
                 td { +konsument.kontaktperson }
                 td { +konsument.opprettet.toString() }
             }

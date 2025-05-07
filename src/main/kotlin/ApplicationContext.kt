@@ -53,12 +53,13 @@ open class ApplicationContext(env: Map<String, String>) {
         stillingFeedBaseUrl = env.getValue("STILLING_FEED_BASE_URL"),
         stillingFeedToken = env.getValue("STILLING_FEED_ADMIN_TOKEN"),
         httpClient = httpClient,
+        objectMapper = objectMapper,
     )
 
     val rootRouter = RootRouter()
 
-    val konsumentService = KonsumentService(stillingFeedKlient, objectMapper)
-    val konsumentRouter = KonsumentRouter(konsumentService)
+    open val konsumentService by lazy { KonsumentService(stillingFeedKlient, objectMapper) }
+    val konsumentRouter by lazy { KonsumentRouter(konsumentService) }
 
     val tokenService = TokenService(stillingFeedKlient)
     val tokenRouter = TokenRouter(tokenService)

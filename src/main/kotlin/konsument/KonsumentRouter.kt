@@ -6,7 +6,6 @@ import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 
 class KonsumentRouter(
     private val konsumentService: KonsumentService
@@ -21,54 +20,16 @@ class KonsumentRouter(
         javalin.get("/konsument/sok") { håndterFinnKonsument(it) }
     }
 
-    val konsumenter = listOf(
-        KonsumentDTO(
-            UUID.randomUUID(),
-            "Tasteriet Trykkeservice",
-            "test@example.com",
-            "12345678",
-            "Karl Q. Lator",
-            null
-        ),
-        KonsumentDTO(UUID.randomUUID(), "Kvernebryggeriet", "kvern@epost.no", "12345678", "Karoline Kvern", null),
-        KonsumentDTO(UUID.randomUUID(), "Bakeriet Boller & Brød", "baker@boller.no", "98765432", "Bente Bolle", null),
-        KonsumentDTO(UUID.randomUUID(), "Sykkelverkstedet AS", "sykkel@verksted.no", "45678912", "Sindre Sykkel", null),
-        KonsumentDTO(UUID.randomUUID(), "Kaffekoppen Kafé", "kaffe@kopp.no", "11223344", "Kari Kopp", null),
-        KonsumentDTO(UUID.randomUUID(), "Blomsterbutikken Flora", "flora@blomst.no", "99887766", "Flora Blomst", null),
-        KonsumentDTO(
-            UUID.randomUUID(),
-            "Elektronikk Eksperten",
-            "ekspert@elektronikk.no",
-            "33445566",
-            "Eirik Elektron",
-            null
-        ),
-        KonsumentDTO(UUID.randomUUID(), "Møbelhuset Komfort", "komfort@mobel.no", "77889900", "Mona Møbel", null)
-    )
-
     private fun håndterFinnKonsument(ctx: Context) {
-        var spørring = ctx.queryParam("q")
-        log.info("Mottar søk etter konsument med spørring: $spørring, ${ctx.body()}")
-        if (spørring.isNullOrBlank()) {
-            ctx.html(createHTML().span {
-                KonsumentTabell(konsumenter)
-            })
-        }
-
+        val spørring = ctx.queryParam("q")
+        log.info("Mottar søk etter konsument med spørring: $spørring")
+        val konsumenter = konsumentService.hentKonsumenter(spørring)
         ctx.html(createHTML().div {
             id = "konsumentTabell"
-            KonsumentTabell(konsumenter.filter { konsument ->
-                listOf(
-                    konsument.id.toString(),
-                    konsument.identifikator,
-                    konsument.email,
-                    konsument.telefon,
-                    konsument.kontaktperson,
-                    konsument.opprettet?.toString()
-                ).any { it?.contains(spørring ?: "", ignoreCase = true) == true }
-            })
+            style = "width: 100%;"
+            div { +"${konsumenter.size} ${if (konsumenter.size == 1) "konsument" else "konsumenter"}" }
+            KonsumentTabell(konsumenter)
         })
-
     }
 
     private fun håndterKonsumentForm(ctx: Context) {
@@ -92,6 +53,7 @@ class KonsumentRouter(
                 attributes["hx-get"] = "/konsument/form"
                 attributes["hx-target"] = "#konsument"
                 attributes["hx-swap"] = "outerHTML"
+                autoFocus = true
                 +"Opprett ny konsument"
             }
         }
