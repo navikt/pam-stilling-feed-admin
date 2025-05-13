@@ -53,6 +53,10 @@ spec:
       claims:
         extra:
           - "NAVident"
+  accessPolicy:
+    outbound:
+      rules:
+        - application: pam-stilling-feed
   envFrom:
     - secret: pam-stilling-feed-admin-token
   env:
