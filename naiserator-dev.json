@@ -1,7 +1,7 @@
 {
   "ingress": [
     "https://pam-stilling-feed-admin.intern.dev.nav.no",
-    "https://stillingsfeedadmin.dev.intern.nav.no"
+    "https://stillingsfeedadmin.intern.dev.nav.no"
   ],
   "min_replicas": 1,
   "max_replicas": 1,
