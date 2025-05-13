@@ -69,7 +69,7 @@ class StillingFeedKlient(
         """.trimIndent())
         when (response.statusCode()) {
             HttpStatus.OK.code -> {
-                log.info("Token generert: ${response.body()}")
+                log.info("Token generert for konsument: ${tokenRequest.konsumentId}")
                 return response.body()
             }
             else -> {
