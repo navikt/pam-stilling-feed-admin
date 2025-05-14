@@ -56,7 +56,7 @@ open class ApplicationContext(env: Map<String, String>) {
         objectMapper = objectMapper,
     )
 
-    val rootRouter = RootRouter()
+    val rootRouter = RootRouter(stillingFeedKlient)
 
     open val konsumentService by lazy { KonsumentService(stillingFeedKlient, objectMapper) }
     val konsumentRouter by lazy { KonsumentRouter(konsumentService) }

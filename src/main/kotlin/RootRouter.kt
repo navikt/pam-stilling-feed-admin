@@ -7,7 +7,9 @@ import no.nav.pam.stilling.feed.admin.komponenter.Input
 import no.nav.pam.stilling.feed.admin.konsument.KonsumentForm
 import no.nav.pam.stilling.feed.admin.token.GenererTokenForm
 
-class RootRouter {
+class RootRouter(
+    private val stillingFeedKlient: StillingFeedKlient
+) {
     fun setupRoutes(javalin: Javalin) {
         javalin.get("/") { it.redirect("/konsument") }
         javalin.get("/konsument/opprett") { opprettKonsument(it) }
@@ -44,7 +46,7 @@ class RootRouter {
 
     private fun genererToken(ctx: Context) {
         ctx.html(indexHTML {
-            GenererTokenForm()
+            GenererTokenForm(stillingFeedKlient.hentKonsumenter(""))
         })
     }
 }
