@@ -27,6 +27,11 @@ fun templateHTML(
             integrity = "sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
             crossorigin = ScriptCrossorigin.anonymous
         }
+        script {
+            type = "text/javascript"
+            src = "/public/script.js"
+            defer = true
+        }
         title { +title }
     }
     body {

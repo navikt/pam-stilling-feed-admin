@@ -1,6 +1,7 @@
 package no.nav.pam.stilling.feed.admin.komponenter
 
 import kotlinx.html.*
+import java.util.*
 
 enum class ButtonVariant(val variant: String) {
     PRIMARY("primary"),
@@ -15,6 +16,7 @@ enum class ButtonSize(val size: String) {
 }
 
 class ButtonProps {
+    var id: String = UUID.randomUUID().toString()
     var type: ButtonType = ButtonType.button
     var variant: ButtonVariant = ButtonVariant.PRIMARY
     var size: ButtonSize = ButtonSize.MEDIUM
@@ -22,9 +24,10 @@ class ButtonProps {
     var attributes: MutableMap<String, String> = mutableMapOf()
 }
 
-fun FlowOrInteractiveOrPhrasingContent.Button(block: ButtonProps.() -> Unit) {
+fun FlowOrInteractiveContent.Button(block: ButtonProps.() -> Unit) {
     val props = ButtonProps().apply(block)
     button {
+        id = props.id
         classes = setOf("navds-button", "navds-button--${props.variant}", "navds-button--${props.size.size}")
         type = props.type
         props.attributes.forEach { (key, value) ->
