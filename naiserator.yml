@@ -53,6 +53,9 @@ spec:
       claims:
         extra:
           - "NAVident"
+    sidecar:
+      enabled: true
+      autoLogin: true
   accessPolicy:
     outbound:
       rules:
