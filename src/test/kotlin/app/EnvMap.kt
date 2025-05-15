@@ -17,4 +17,6 @@ private val lokalAdminToken = JWT.create()
 val env = mutableMapOf(
     "STILLING_FEED_BASE_URL" to "http://localhost:8080",
     "STILLING_FEED_ADMIN_TOKEN" to lokalAdminToken,
+    "ONETIMESECRET_PASSPHRASE" to "arbeidsplassen",
+    "ONETIMESECRET_BASE_URL" to "https://eu.onetimesecret.com"
 )

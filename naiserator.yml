@@ -60,8 +60,12 @@ spec:
     outbound:
       rules:
         - application: pam-stilling-feed
+      external:
+        - host: eu.onetimesecret.com
   envFrom:
     - secret: pam-stilling-feed-admin-token
   env:
     - name: STILLING_FEED_BASE_URL
       value: {{ stilling_feed_base_url }}
+    - name: ONETIMESECRET_BASE_URL
+      value: https://eu.onetimesecret.com/

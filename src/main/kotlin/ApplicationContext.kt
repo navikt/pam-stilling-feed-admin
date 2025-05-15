@@ -18,6 +18,7 @@ import no.nav.pam.stilling.feed.admin.konsument.KonsumentRouter
 import no.nav.pam.stilling.feed.admin.konsument.KonsumentService
 import no.nav.pam.stilling.feed.admin.nais.HealthService
 import no.nav.pam.stilling.feed.admin.nais.NaisController
+import no.nav.pam.stilling.feed.admin.token.OneTimeSecretKlient
 import no.nav.pam.stilling.feed.admin.token.TokenRouter
 import no.nav.pam.stilling.feed.admin.token.TokenService
 import java.net.http.HttpClient
@@ -56,11 +57,18 @@ open class ApplicationContext(env: Map<String, String>) {
         objectMapper = objectMapper,
     )
 
+    val oneTimeSecretKlient = OneTimeSecretKlient(
+        baseUrl = env.getValue("ONETIMESECRET_BASE_URL"),
+        passphrase = env.getValue("ONETIMESECRET_PASSPHRASE"),
+        httpClient = httpClient,
+        objectMapper = objectMapper,
+    )
+
     val rootRouter = RootRouter(stillingFeedKlient)
 
     open val konsumentService by lazy { KonsumentService(stillingFeedKlient, objectMapper) }
     val konsumentRouter by lazy { KonsumentRouter(konsumentService) }
 
-    val tokenService = TokenService(stillingFeedKlient)
+    val tokenService = TokenService(stillingFeedKlient, oneTimeSecretKlient)
     val tokenRouter = TokenRouter(tokenService)
 }
