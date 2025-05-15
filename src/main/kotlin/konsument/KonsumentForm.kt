@@ -13,7 +13,6 @@ fun FlowContent.KonsumentForm() {
     )
 
     form {
-        id = "konsumentForm"
         attributes["hx-post"] = "/konsument/opprett"
         attributes["hx-target"] = "#konsumentForm"
         attributes["hx-swap"] = "outerHTML"

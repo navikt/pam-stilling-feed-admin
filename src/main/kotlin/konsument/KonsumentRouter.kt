@@ -4,6 +4,7 @@ import io.javalin.Javalin
 import io.javalin.http.Context
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
+import no.nav.pam.stilling.feed.admin.komponenter.Button
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -34,7 +35,7 @@ class KonsumentRouter(
 
     private fun håndterKonsumentForm(ctx: Context) {
         ctx.html(createHTML().div {
-            id = "konsument"
+            id = "konsumentForm"
             KonsumentForm()
         })
     }
@@ -45,16 +46,18 @@ class KonsumentRouter(
         ctx.html(createHTML().div {
             id = "konsument"
             pre {
+                style = "width: 100%; margin-bottom: 1rem;"
                 code {
                     +konsument
                 }
             }
-            button {
+
+            Button {
                 attributes["hx-get"] = "/konsument/form"
                 attributes["hx-target"] = "#konsument"
                 attributes["hx-swap"] = "outerHTML"
-                autoFocus = true
-                +"Opprett ny konsument"
+                attributes["autofocus"] = "true"
+                label = "Opprett ny konsument"
             }
         }
         )

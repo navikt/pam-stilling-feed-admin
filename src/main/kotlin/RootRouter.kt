@@ -19,26 +19,34 @@ class RootRouter(
 
     private fun opprettKonsument(ctx: Context) {
         ctx.html(indexHTML {
-            div {
-                id = "konsumentForm"
-                KonsumentForm()
+            section {
+                h2 { +"Opprett konsument" }
+
+                p { +"Fyll ut skjema for å opprette en ny konsument." }
+
+                div {
+                    id = "konsumentForm"
+                    KonsumentForm()
+                }
             }
         })
     }
 
     private fun finnKonsument(ctx: Context) {
         ctx.html(indexHTML {
-                Input {
-                    this.id = "konsumentSok"
-                    this.name = "q"
-                    type = InputType.text
-                    autoFocus = true
-                    attributes["hx-get"] = "/konsument/sok"
-                    attributes["hx-target"] = "#konsumentTabell"
-                    attributes["hx-trigger"] = "load, input changed delay:250ms"
-                    attributes["hx-swap"] = "outerHTML"
-                    placeholder = "Søk etter konsument"
-                }
+            h2 { +"Søk etter konsument" }
+
+            Input {
+                this.id = "konsumentSok"
+                this.name = "q"
+                type = InputType.text
+                autoFocus = true
+                attributes["hx-get"] = "/konsument/sok"
+                attributes["hx-target"] = "#konsumentTabell"
+                attributes["hx-trigger"] = "load, input changed delay:250ms"
+                attributes["hx-swap"] = "outerHTML"
+                placeholder = "ID, Identifikator, Epost, Telefon eller Kontaktperson"
+            }
 
             div { id = "konsumentTabell" }
         })
@@ -46,7 +54,15 @@ class RootRouter(
 
     private fun genererToken(ctx: Context) {
         ctx.html(indexHTML {
-            GenererTokenForm(stillingFeedKlient.hentKonsumenter(""))
+            section {
+                id = "genererTokenForm"
+
+                h2 { +"Generer token" }
+
+                p { +"Velg konsument for å generere et token og en utfylt epost." }
+
+                GenererTokenForm(stillingFeedKlient.hentKonsumenter(""))
+            }
         })
     }
 }

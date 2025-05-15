@@ -8,7 +8,6 @@ fun FlowContent.GenererTokenForm(
     konsumenter: List<KonsumentDTO>
 ) {
     form {
-        id = "genererTokenForm"
         attributes["hx-post"] = "/token/generer"
         attributes["hx-target"] = "#genererTokenForm"
         attributes["hx-swap"] = "outerHTML"
@@ -50,7 +49,7 @@ fun FlowContent.GenererTokenForm(
         div {
             id = "laster"
             classes = setOf("navds-loader")
-            style = "display: none; width: fit-content; font-size: 1.5rem;"
+            style = "display: none; width: 100%; font-size: 2rem; text-align: center;"
             +"Vær tålmodig, krønsjer noen tall..."
         }
     }
