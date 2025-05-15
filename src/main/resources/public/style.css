@@ -3,10 +3,6 @@
     padding: 0;
 }
 
-html, body {
-    height: 100%;
-}
-
 body {
     background-color: #f0f0f0;
     margin: 0;
@@ -122,4 +118,8 @@ input, select {
     margin: 1rem 0 4rem 0;
     max-width: 800px;
     min-width: 70%;
+}
+
+.htmx-request {
+    display: inline-block !important;
 }

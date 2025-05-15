@@ -12,6 +12,7 @@ fun FlowContent.GenererTokenForm(
         attributes["hx-post"] = "/token/generer"
         attributes["hx-target"] = "#genererTokenForm"
         attributes["hx-swap"] = "outerHTML"
+        attributes["hx-indicator"] = "#laster"
 
         div {
             style = "display: flex; flex-direction: column;"
@@ -44,6 +45,13 @@ fun FlowContent.GenererTokenForm(
             type = ButtonType.submit
             variant = ButtonVariant.PRIMARY
             label = "Generer token"
+        }
+
+        div {
+            id = "laster"
+            classes = setOf("navds-loader")
+            style = "display: none; width: fit-content; font-size: 1.5rem;"
+            +"Vær tålmodig, krønsjer noen tall..."
         }
     }
 }
