@@ -43,7 +43,6 @@ fun indexHTML(
     content: FlowContent.() -> Unit = { }
 ): String = templateHTML {
     Navbar()
-    div { id = "error" }
     main {
         id = "root"
         content()

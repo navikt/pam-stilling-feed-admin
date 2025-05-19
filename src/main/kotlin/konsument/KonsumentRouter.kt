@@ -17,7 +17,6 @@ class KonsumentRouter(
 
     fun setupRoutes(javalin: Javalin) {
         javalin.post("/konsument/opprett") { håndterOpprettKonsument(it) }
-        javalin.get("/konsument/form") { håndterKonsumentForm(it) }
         javalin.get("/konsument/sok") { håndterFinnKonsument(it) }
     }
 
@@ -33,18 +32,14 @@ class KonsumentRouter(
         })
     }
 
-    private fun håndterKonsumentForm(ctx: Context) {
-        ctx.html(createHTML().div {
-            id = "konsumentForm"
-            KonsumentForm()
-        })
-    }
-
     private fun håndterOpprettKonsument(ctx: Context) {
         val request = KonsumentDTO.fraHtmlForm(ctx.formParamMap())
         val konsument = konsumentService.opprettKonsument(request)
-        ctx.html(createHTML().div {
+        ctx.html(createHTML().section {
             id = "konsument"
+
+            h2 { +"Opprettet konsument" }
+
             pre {
                 style = "width: 100%; margin-bottom: 1rem;"
                 code {
@@ -53,9 +48,8 @@ class KonsumentRouter(
             }
 
             Button {
-                attributes["hx-get"] = "/konsument/form"
-                attributes["hx-target"] = "#konsument"
-                attributes["hx-swap"] = "outerHTML"
+                attributes["hx-get"] = "/konsument/opprett"
+                attributes["hx-target"] = "body"
                 attributes["autofocus"] = "true"
                 label = "Opprett ny konsument"
             }

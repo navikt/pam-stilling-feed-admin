@@ -130,10 +130,6 @@ input, select {
     min-width: 70%;
 }
 
-#konsumentForm {
-    width: 100%;
-}
-
 .htmx-request {
     display: inline-block !important;
 }

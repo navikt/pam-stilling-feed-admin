@@ -20,14 +20,13 @@ class RootRouter(
     private fun opprettKonsument(ctx: Context) {
         ctx.html(indexHTML {
             section {
+                id = "konsumentForm"
+
                 h2 { +"Opprett konsument" }
 
                 p { +"Fyll ut skjema for å opprette en ny konsument." }
 
-                div {
-                    id = "konsumentForm"
-                    KonsumentForm()
-                }
+                KonsumentForm()
             }
         })
     }
