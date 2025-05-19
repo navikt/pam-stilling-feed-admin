@@ -16,7 +16,7 @@ data class KonsumentDTO(
             return KonsumentDTO(
                 id = null,
                 identifikator = form["identifikator"]?.first() ?: requireNotNull("Identifikator er påkrevd"),
-                email = form["email"]?.first() ?: requireNotNull("Email er påkrevd"),
+                email = form["email"]?.first() ?: requireNotNull("E-post er påkrevd"),
                 telefon = form["telefon"]?.first() ?: requireNotNull("Telefon er påkrevd"),
                 kontaktperson = form["kontaktperson"]?.first() ?: requireNotNull("Kontaktperson er påkrevd"),
                 opprettet = null,

@@ -19,9 +19,9 @@ val tekstmal = """
 
     Passphrasen er: <ONETIMESECRET_PASSPHRASE>
     Lenken er bare gyldig i 7 dager og kan bare åpnes en gang, så pass på at du får lagret tokenet et sted.
-    Hvis du ikke fikk hentet tokenet innenfor tiden, eller du ikke fikk tak i det, så bare send meg en mail så kan jeg sende deg et nytt token.
+    Hvis du ikke fikk hentet tokenet innenfor tiden, eller du ikke fikk tak i det, så bare send meg en e-post så kan jeg sende deg et nytt token.
 
-    Har du noen spørsmål, så er det bare å sende oss en epost på nav.team.arbeidsplassen@nav.no.
+    Har du noen spørsmål, så er det bare å sende oss en e-post på nav.team.arbeidsplassen@nav.no.
 """.trimIndent()
 
 fun FlowContent.EpostMal(block: EpostMalProps.() -> Unit) {
@@ -42,7 +42,7 @@ fun FlowContent.EpostMal(block: EpostMalProps.() -> Unit) {
         id = "kopierEpostmal"
         type = ButtonType.button
         variant = ButtonVariant.PRIMARY
-        attributes["onClick"] = "kopierTilUtklippstavle('#epostmal', '#kopierEpostmal', 'Kopier epostmal')"
-        label = "Kopier epostmal"
+        attributes["onClick"] = "kopierTilUtklippstavle('#epostmal', '#kopierEpostmal', 'Kopier e-postmal')"
+        label = "Kopier e-postmal"
     }
 }

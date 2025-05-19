@@ -45,7 +45,7 @@ class RootRouter(
                 attributes["hx-target"] = "#konsumentTabell"
                 attributes["hx-trigger"] = "load, input changed delay:250ms"
                 attributes["hx-swap"] = "outerHTML"
-                placeholder = "ID, Identifikator, Epost, Telefon eller Kontaktperson"
+                placeholder = "ID, Identifikator, E-post, Telefon eller Kontaktperson"
             }
 
             div { id = "konsumentTabell" }
@@ -59,7 +59,7 @@ class RootRouter(
 
                 h2 { +"Generer token" }
 
-                p { +"Velg konsument for å generere et token og en utfylt epost." }
+                p { +"Velg konsument for å generere et token og en utfylt e-post." }
 
                 GenererTokenForm(stillingFeedKlient.hentKonsumenter(""))
             }

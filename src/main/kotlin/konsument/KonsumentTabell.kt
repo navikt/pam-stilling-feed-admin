@@ -7,7 +7,7 @@ fun FlowContent.KonsumentTabell(konsumenter: List<KonsumentDTO>) {
         tr {
             th { +"ID" }
             th { +"Identifikator" }
-            th { +"Epost" }
+            th { +"E-post" }
             th { +"Telefon" }
             th { +"Kontaktperson" }
             th { +"Opprettet" }
