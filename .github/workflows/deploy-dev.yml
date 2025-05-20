@@ -7,7 +7,6 @@ on:
       - "LICENCE"
       - "CODEOWNERS"
     branches:
-      - main
       - feature/**
 jobs:
   call-workflow:
