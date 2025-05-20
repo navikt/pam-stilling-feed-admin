@@ -1,13 +1,8 @@
 name: deploy-prod
 on:
-  push:
-    paths-ignore:
-      - "**.md"
-      - ".gitignore"
-      - "LICENCE"
-      - "CODEOWNERS"
-    branches:
-      - main
+  release:
+    types: [published]
+
 jobs:
   call-workflow:
     permissions:
