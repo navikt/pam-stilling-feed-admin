@@ -18,6 +18,7 @@ jobs:
       id-token: write
     with:
       CLUSTER: prod-gcp
+      NAIS_VARS: naiserator-prod.json
       JAVA_VERSION: 21
       BUILD_CACHE: gradle
       NAIS_RESOURCE: naiserator.yml
