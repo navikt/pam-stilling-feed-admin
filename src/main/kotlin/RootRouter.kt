@@ -3,11 +3,8 @@ package no.nav.pam.stilling.feed.admin
 import io.javalin.Javalin
 import io.javalin.http.Context
 import kotlinx.html.*
-import no.nav.pam.stilling.feed.admin.token.GenererTokenForm
 
-class RootRouter(
-    private val stillingFeedKlient: StillingFeedKlient
-) {
+class RootRouter {
     fun setupRoutes(javalin: Javalin) {
         javalin.get("/") { it.redirect("/konsument") }
         javalin.get("/konsument/opprett") { opprettKonsument(it) }
@@ -40,13 +37,10 @@ class RootRouter(
     private fun genererToken(ctx: Context) {
         ctx.html(indexHTML {
             section {
-                id = "genererTokenForm"
-
-                h2 { +"Generer token" }
-
-                p { +"Velg konsument for å generere et token og en utfylt e-post." }
-
-                GenererTokenForm(stillingFeedKlient.hentKonsumenter(""))
+                id = "genererToken"
+                attributes["hx-get"] = "/token/form"
+                attributes["hx-target"] = "#genererToken"
+                attributes["hx-trigger"] = "load"
             }
         })
     }
