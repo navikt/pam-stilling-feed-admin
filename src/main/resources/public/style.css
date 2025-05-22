@@ -124,12 +124,6 @@ input, select {
     border-radius: var(--a-border-radius-medium);
 }
 
-#konsumentSok {
-    margin: 2rem 0 4rem 0;
-    max-width: 800px;
-    min-width: 70%;
-}
-
 .htmx-request {
     display: inline-block !important;
 }

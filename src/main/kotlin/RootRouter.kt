@@ -3,13 +3,8 @@ package no.nav.pam.stilling.feed.admin
 import io.javalin.Javalin
 import io.javalin.http.Context
 import kotlinx.html.*
-import no.nav.pam.stilling.feed.admin.komponenter.Input
-import no.nav.pam.stilling.feed.admin.konsument.KonsumentForm
-import no.nav.pam.stilling.feed.admin.token.GenererTokenForm
 
-class RootRouter(
-    private val stillingFeedKlient: StillingFeedKlient
-) {
+class RootRouter {
     fun setupRoutes(javalin: Javalin) {
         javalin.get("/") { it.redirect("/konsument") }
         javalin.get("/konsument/opprett") { opprettKonsument(it) }
@@ -20,47 +15,32 @@ class RootRouter(
     private fun opprettKonsument(ctx: Context) {
         ctx.html(indexHTML {
             section {
-                id = "konsumentForm"
-
-                h2 { +"Opprett konsument" }
-
-                p { +"Fyll ut skjema for å opprette en ny konsument." }
-
-                KonsumentForm()
+                id = "konsument"
+                attributes["hx-get"] = "/konsument/form"
+                attributes["hx-target"] = "#konsument"
+                attributes["hx-trigger"] = "load"
             }
         })
     }
 
     private fun finnKonsument(ctx: Context) {
         ctx.html(indexHTML {
-            h2 { +"Søk etter konsument" }
-
-            Input {
-                this.id = "konsumentSok"
-                this.name = "q"
-                type = InputType.text
-                autoFocus = true
+            div {
+                id = "konsumentSok"
                 attributes["hx-get"] = "/konsument/sok"
-                attributes["hx-target"] = "#konsumentTabell"
-                attributes["hx-trigger"] = "load, input changed delay:250ms"
-                attributes["hx-swap"] = "outerHTML"
-                placeholder = "ID, Identifikator, E-post, Telefon eller Kontaktperson"
+                attributes["hx-target"] = "#konsumentSok"
+                attributes["hx-trigger"] = "load"
             }
-
-            div { id = "konsumentTabell" }
         })
     }
 
     private fun genererToken(ctx: Context) {
         ctx.html(indexHTML {
             section {
-                id = "genererTokenForm"
-
-                h2 { +"Generer token" }
-
-                p { +"Velg konsument for å generere et token og en utfylt e-post." }
-
-                GenererTokenForm(stillingFeedKlient.hentKonsumenter(""))
+                id = "genererToken"
+                attributes["hx-get"] = "/token/form"
+                attributes["hx-target"] = "#genererToken"
+                attributes["hx-trigger"] = "load"
             }
         })
     }

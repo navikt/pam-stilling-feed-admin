@@ -64,11 +64,11 @@ open class ApplicationContext(env: Map<String, String>) {
         objectMapper = objectMapper,
     )
 
-    val rootRouter = RootRouter(stillingFeedKlient)
+    val rootRouter = RootRouter()
 
-    open val konsumentService by lazy { KonsumentService(stillingFeedKlient, objectMapper) }
-    val konsumentRouter by lazy { KonsumentRouter(konsumentService) }
+    val konsumentService = KonsumentService(stillingFeedKlient, objectMapper)
+    val konsumentRouter = KonsumentRouter(konsumentService)
 
     val tokenService = TokenService(stillingFeedKlient, oneTimeSecretKlient)
-    val tokenRouter = TokenRouter(tokenService)
+    val tokenRouter = TokenRouter(tokenService, konsumentService)
 }
