@@ -69,6 +69,6 @@ open class ApplicationContext(env: Map<String, String>) {
     open val konsumentService by lazy { KonsumentService(stillingFeedKlient, objectMapper) }
     open val konsumentRouter by lazy { KonsumentRouter(konsumentService) }
 
-    val tokenService = TokenService(stillingFeedKlient, oneTimeSecretKlient)
-    val tokenRouter by lazy { TokenRouter(tokenService, konsumentService) }
+    open val tokenService by lazy { TokenService(stillingFeedKlient, oneTimeSecretKlient) }
+    open val tokenRouter by lazy { TokenRouter(tokenService, konsumentService) }
 }
