@@ -4,22 +4,44 @@ import io.javalin.Javalin
 import io.javalin.http.Context
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
+import no.nav.pam.stilling.feed.admin.createFragmentHTML
+import no.nav.pam.stilling.feed.admin.fragment
 import no.nav.pam.stilling.feed.admin.komponenter.Button
 import no.nav.pam.stilling.feed.admin.komponenter.ButtonVariant
 import no.nav.pam.stilling.feed.admin.komponenter.EpostMal
 import no.nav.pam.stilling.feed.admin.komponenter.Input
+import no.nav.pam.stilling.feed.admin.konsument.KonsumentService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class TokenRouter(
     private val tokenService: TokenService,
+    private val konsumentService: KonsumentService,
 ) {
     companion object {
         val log: Logger = LoggerFactory.getLogger(TokenRouter::class.java)
     }
 
     fun setupRoutes(javalin: Javalin) {
+        javalin.get("/token/form") { lastInnTokenForm(it) }
         javalin.post("/token/generer") { hånterGenererToken(it) }
+    }
+
+    private fun lastInnTokenForm(ctx: Context) {
+        ctx.html(createFragmentHTML().fragment {
+            h2 { +"Generer token" }
+
+            p { +"Velg konsument for å generere et token og en utfylt e-post." }
+
+            GenererTokenForm(konsumentService.hentKonsumenter(""))
+
+            div {
+                id = "laster"
+                classes = setOf("navds-loader")
+                style = "display: none; width: 100%; font-size: 2rem; text-align: center;"
+                +"Vær tålmodig, krønsjer noen tall..."
+            }
+        })
     }
 
     private fun hånterGenererToken(ctx: Context) = try {
@@ -60,6 +82,17 @@ class TokenRouter(
             }
         })
     } catch (e: Exception) {
-        ctx.html("Feil ved generering av token: ${e.message}")
+        log.error("Feil ved generering av token", e)
+        ctx.html(createHTML().section {
+            h2 { +"Åisann, det skjedde visst noe feil!" }
+
+            pre {
+                +"Feil ved generering av token"
+                details {
+                    summary { +"Caused by: ${e.cause}: ${e.message}" }
+                    +e.stackTraceToString()
+                }
+            }
+        })
     }
 }

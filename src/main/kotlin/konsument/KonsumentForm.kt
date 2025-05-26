@@ -7,8 +7,7 @@ import no.nav.pam.stilling.feed.admin.komponenter.Input
 fun FlowContent.KonsumentForm() {
     form {
         attributes["hx-post"] = "/konsument/opprett"
-        attributes["hx-target"] = "#konsumentForm"
-        attributes["hx-swap"] = "outerHTML"
+        attributes["hx-target"] = "#konsument"
 
         Input {
             name = "identifikator"
