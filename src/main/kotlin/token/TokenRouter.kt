@@ -2,6 +2,7 @@ package no.nav.pam.stilling.feed.admin.token
 
 import io.javalin.Javalin
 import io.javalin.http.Context
+import io.javalin.http.HttpStatus
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 import no.nav.pam.stilling.feed.admin.createFragmentHTML
@@ -83,6 +84,7 @@ class TokenRouter(
         })
     } catch (e: Exception) {
         log.error("Feil ved generering av token", e)
+        ctx.status(HttpStatus.INTERNAL_SERVER_ERROR)
         ctx.html(createHTML().section {
             h2 { +"Åisann, det skjedde visst noe feil!" }
 
