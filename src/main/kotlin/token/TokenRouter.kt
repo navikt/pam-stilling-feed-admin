@@ -29,7 +29,7 @@ class TokenRouter(
         ctx.html(createFragmentHTML().fragment {
             h2 { +"Generer token" }
 
-            p { +"Velg konsument for å generere et token og en utfylt e-post." }
+            p { +"Velg konsument for å generere et nytt token og en ferdig utfylt e-post." }
 
             GenererTokenForm(konsumentService.hentKonsumenter(""))
 
