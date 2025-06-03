@@ -151,17 +151,8 @@ class KonsumentRouterTest : TestRunningApplication() {
     @Test
     fun `Skal opprette en konsument via skjemaet`() {
         val konsument = KonsumentDTO.genererTilfeldig()
-        val konsumentResponse = """
-                Opprettet ny konsument:
-                ID:             ${konsument.id}
-                Identifikator:  ${konsument.identifikator}
-                Email:          ${konsument.email}
-                Telefon:        ${konsument.telefon}
-                Kontaktperson:  ${konsument.kontaktperson}
-                Opprettet:      ${konsument.opprettet}
-            """.trimIndent()
 
-        every { konsumentService.opprettKonsument(any()) } returns konsumentResponse
+        every { konsumentService.opprettKonsument(any()) } returns konsument
 
         skrape(HttpFetcher) {
             request {
