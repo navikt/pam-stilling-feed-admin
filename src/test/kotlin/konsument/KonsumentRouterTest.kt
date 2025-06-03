@@ -10,6 +10,7 @@ import it.skrape.selects.*
 import no.nav.pam.stilling.feed.admin.konsument.KonsumentDTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import java.net.URI
 import java.time.LocalDateTime
 import java.util.*
 
@@ -133,7 +134,7 @@ class KonsumentRouterTest : TestRunningApplication() {
                     findAll("form") {
                         assertThat(size).isEqualTo(1)
 
-                        findAll("input") { assertThat(size).isEqualTo(4) }
+                        findAll("input") { assertThat(size).isEqualTo(6) }
                         findAll("button") { assertThat(size).isEqualTo(1) }
                         findAll("label") {
                             assertThat(size).isEqualTo(5)
@@ -153,6 +154,9 @@ class KonsumentRouterTest : TestRunningApplication() {
         val konsument = KonsumentDTO.genererTilfeldig()
 
         every { konsumentService.opprettKonsument(any()) } returns konsument
+        every { appCtx.tokenServiceMock.genererToken(any()) } returns "Bearer ${UUID.randomUUID()}"
+        every { appCtx.tokenServiceMock.genererOneTimeSecret(any()) } returns URI.create("https://example.com/one-time-secret")
+        every { appCtx.tokenServiceMock.oneTimeSecretPassphrase } returns "passphrase"
 
         skrape(HttpFetcher) {
             request {
@@ -173,25 +177,12 @@ class KonsumentRouterTest : TestRunningApplication() {
                 htmlDocument {
                     findAll("h2") {
                         assertThat(size).isEqualTo(1)
-                        assertThat(text).isEqualTo("Opprettet konsument")
-                    }
-
-                    findAll("pre") {
-                        assertThat(size).isEqualTo(1)
-                        assertThat(first().text).contains(konsument.id.toString())
-                        assertThat(first().text).contains(konsument.identifikator)
-                        assertThat(first().text).contains(konsument.email)
-                        assertThat(first().text).contains(konsument.telefon)
-                        assertThat(first().text).contains(konsument.kontaktperson)
-                        assertThat(first().text).contains(konsument.opprettet.toString())
+                        assertThat(text).contains("Token for konsument:")
                     }
 
                     findAll("button") {
-                        assertThat(size).isEqualTo(1)
-                        assertThat(first().attributes["hx-get"]).isEqualTo("/konsument/opprett")
-                        assertThat(first().attributes["hx-target"]).isEqualTo("#konsument")
-                        assertThat(first().attributes["autofocus"]).isEqualTo("true")
-                        assertThat(first().text).isEqualTo("Opprett ny konsument")
+                        assertThat(size).isEqualTo(2)
+                        assertThat(text).contains("Kopier")
                     }
                 }
             }

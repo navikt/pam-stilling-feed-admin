@@ -107,6 +107,7 @@ class TokenRouterTest : TestRunningApplication() {
     @Test
     fun `Skal generere token og e-post mal`() {
         val tokenRequest = TokenRequestDTO.genererTilfeldig()
+        val konsument = konsumentService.hentKonsumenter(tokenRequest.konsumentId.toString()).first()
         val token = "Noe beskrivende tekst her: Bearer 1234567890abcdef"
 
         every { tokenService.genererToken(tokenRequest) } returns token
@@ -130,7 +131,7 @@ class TokenRouterTest : TestRunningApplication() {
                 htmlDocument {
                     findAll("h2") {
                         assertThat(size).isEqualTo(1)
-                        assertThat(text).isEqualTo("Token for konsument: ${tokenRequest.konsumentId}")
+                        assertThat(text).isEqualTo("Token for konsument: ${konsument.identifikator}")
                     }
 
                     findAll("p") {
