@@ -28,6 +28,10 @@ fun templateHTML(
             crossorigin = ScriptCrossorigin.anonymous
         }
         script {
+            src = "https://unpkg.com/hyperscript.org@0.9.14"
+            crossorigin = ScriptCrossorigin.anonymous
+        }
+        script {
             type = "text/javascript"
             src = "/public/script.js"
             defer = true
