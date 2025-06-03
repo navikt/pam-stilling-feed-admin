@@ -46,6 +46,9 @@ dependencies {
     implementation("com.auth0:java-jwt:4.5.0")
 
     testImplementation(kotlin("test"))
+    testImplementation("it.skrape:skrapeit:1.2.2")
+    testImplementation("org.assertj:assertj-core:4.0.0-M1")
+    testImplementation("io.mockk:mockk:1.14.2")
 }
 
 tasks.test {
