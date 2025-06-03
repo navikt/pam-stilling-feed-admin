@@ -5,13 +5,19 @@ import io.javalin.http.Context
 import kotlinx.html.*
 import no.nav.pam.stilling.feed.admin.createFragmentHTML
 import no.nav.pam.stilling.feed.admin.fragment
-import no.nav.pam.stilling.feed.admin.komponenter.Button
-import no.nav.pam.stilling.feed.admin.komponenter.Input
+import no.nav.pam.stilling.feed.admin.komponenter.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpRequest.BodyPublishers
+import java.net.http.HttpResponse.BodyHandlers
 
 class KonsumentRouter(
-    private val konsumentService: KonsumentService
+    private val konsumentService: KonsumentService,
+    private val httpClient: HttpClient,
+    private val baseUrl: String,
 ) {
     companion object {
         private val log: Logger = LoggerFactory.getLogger(KonsumentRouter::class.java)
@@ -83,29 +89,21 @@ class KonsumentRouter(
             p { +"Fyll ut skjema for å opprette en ny konsument." }
 
             KonsumentForm()
+
+            Laster()
         })
     }
 
     private fun håndterOpprettKonsument(ctx: Context) {
         val request = KonsumentDTO.fraHtmlForm(ctx.formParamMap())
         val konsument = konsumentService.opprettKonsument(request)
-        ctx.html(createFragmentHTML().fragment {
-            h2 { +"Opprettet konsument" }
-
-            pre {
-                style = "width: 100%; margin-bottom: 1rem;"
-                code {
-                    +konsument
-                }
-            }
-
-            Button {
-                attributes["hx-get"] = "/konsument/opprett"
-                attributes["hx-target"] = "#konsument"
-                attributes["autofocus"] = "true"
-                label = "Opprett ny konsument"
-            }
-        }
+        val html = httpClient.send(
+            HttpRequest.newBuilder()
+                .uri(URI.create("$baseUrl/token/generer"))
+                .POST(BodyPublishers.ofString("konsumentId=${konsument.id}"))
+                .build(),
+            BodyHandlers.ofString()
         )
+        ctx.html(html.body())
     }
 }
