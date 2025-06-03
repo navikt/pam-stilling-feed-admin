@@ -7,10 +7,7 @@ import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 import no.nav.pam.stilling.feed.admin.createFragmentHTML
 import no.nav.pam.stilling.feed.admin.fragment
-import no.nav.pam.stilling.feed.admin.komponenter.Button
-import no.nav.pam.stilling.feed.admin.komponenter.ButtonVariant
-import no.nav.pam.stilling.feed.admin.komponenter.EpostMal
-import no.nav.pam.stilling.feed.admin.komponenter.Input
+import no.nav.pam.stilling.feed.admin.komponenter.*
 import no.nav.pam.stilling.feed.admin.konsument.KonsumentService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -36,29 +33,26 @@ class TokenRouter(
 
             GenererTokenForm(konsumentService.hentKonsumenter(""))
 
-            div {
-                id = "laster"
-                classes = setOf("navds-loader")
-                style = "display: none; width: 100%; font-size: 2rem; text-align: center;"
-                +"Vær tålmodig, krønsjer noen tall..."
-            }
+            Laster()
         })
     }
 
     private fun hånterGenererToken(ctx: Context) = try {
+        log.info("Mottokk request: ${ctx.body()}")
         log.info("Håndterer token request for konsumentId: ${ctx.formParam("konsumentId")}")
         val tokenRequest = TokenRequestDTO.fraHtmlForm(ctx.formParamMap())
+        val konsument = konsumentService.hentKonsumenter(tokenRequest.konsumentId.toString()).first()
         val token = tokenService.genererToken(tokenRequest).split("Bearer ")[1]
         tokenService.genererOneTimeSecret(token)
 
-        ctx.html(createHTML().div {
+        ctx.html(createHTML().section {
             style = """
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
             """.trimIndent()
 
-            h2 { +"Token for konsument: ${tokenRequest.konsumentId}" }
+            h2 { +"Token for konsument: ${konsument.identifikator}" }
 
             p { +"Utløpsdato: ${tokenRequest.expires ?: "Ingen utløpsdato"}" }
 
