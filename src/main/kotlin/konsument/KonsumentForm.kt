@@ -3,6 +3,7 @@ package no.nav.pam.stilling.feed.admin.konsument
 import kotlinx.html.*
 import no.nav.pam.stilling.feed.admin.komponenter.Button
 import no.nav.pam.stilling.feed.admin.komponenter.Input
+import no.nav.pam.stilling.feed.admin.komponenter.ModalContent
 
 fun FlowContent.KonsumentForm() {
     form {
@@ -11,6 +12,8 @@ fun FlowContent.KonsumentForm() {
         attributes["hx-target"] = "#konsument"
         attributes["hx-trigger"] = "submit"
         attributes["hx-indicator"] = "#laster"
+
+        ModalContent() // modal content setter globale variabler for heading og body så den må lastes først
 
         Input {
             name = "identifikator"
@@ -53,11 +56,6 @@ fun FlowContent.KonsumentForm() {
             attributes["hx-include"] = "#modalContent"
             attributes["hx-indicator"] = "#modalContent"
             label = "Legg til konsument"
-        }
-        span {
-            id = "modalContent"
-            input(type = InputType.hidden, name = "heading") { attributes["_"] = "on load set global heading to me" }
-            input(type = InputType.hidden, name = "body") { attributes["_"] = "on load set global body to me" }
         }
     }
 }

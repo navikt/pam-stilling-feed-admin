@@ -8,6 +8,14 @@ class ModalProps {
     var body: String = "Brødtekst, lofftekst, og baguettetekst"
 }
 
+fun FlowContent.ModalContent() {
+    span {
+        id = "modalContent"
+        input(type = InputType.hidden, name = "heading") { attributes["_"] = "on load set global heading to me" }
+        input(type = InputType.hidden, name = "body") { attributes["_"] = "on load set global body to me" }
+    }
+}
+
 fun FlowContent.Modal(block: ModalProps.() -> Unit = {}) {
     val props = ModalProps().apply(block)
     dialog {
