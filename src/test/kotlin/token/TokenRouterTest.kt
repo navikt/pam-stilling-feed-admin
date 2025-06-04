@@ -49,7 +49,7 @@ class TokenRouterTest : TestRunningApplication() {
                     findAll("p") {
                         assertThat(size).isEqualTo(1)
                         assertThat(eachTagName).isEqualTo(listOf("p"))
-                        assertThat(text).isEqualTo("Velg konsument for å generere et token og en utfylt e-post.")
+                        assertThat(text).isEqualTo("Velg konsument for å generere et nytt token og en ferdig utfylt e-post.")
                     }
 
                     findAll("form") {
