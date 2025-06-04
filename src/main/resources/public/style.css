@@ -127,3 +127,99 @@ input, select {
 .htmx-request {
     display: inline-block !important;
 }
+
+#modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    border: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    animation-name: fadeIn;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+
+    .modal-underlay {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .modal-content {
+        width: 80%;
+        max-width: 600px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+
+        margin: 0 auto;
+        position: relative;
+        top: -15%;
+
+        border-radius: 8px;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+        background-color: white;
+        padding: 2rem;
+
+        animation-name: zoomIn;
+        animation-duration: 150ms;
+        animation-timing-function: ease;
+    }
+
+    .modal-buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+
+#modal.closing {
+    animation-name: fadeOut;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+#modal.closing > .modal-content {
+    animation-name: zoomOut;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1 }
+    100% { opacity: 0 }
+}
+
+@keyframes zoomIn {
+    0% { transform: scale(0.9) }
+    100% { transform: scale(1) }
+}
+
+@keyframes zoomOut {
+    0% { transform: scale(1) }
+    100% { transform: scale(0.9) }
+}

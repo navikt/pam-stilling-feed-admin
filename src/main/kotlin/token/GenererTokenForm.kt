@@ -10,8 +10,11 @@ fun FlowContent.GenererTokenForm(
     form {
         attributes["hx-post"] = "/token/generer"
         attributes["hx-target"] = "#genererToken"
+        attributes["hx-trigger"] = "submit"
         attributes["hx-swap"] = "outerHTML"
         attributes["hx-indicator"] = "#laster"
+
+        ModalContent() // modal content setter globale variabler for heading og body så den må lastes først
 
         div {
             style = "display: flex; flex-direction: column;"
@@ -24,6 +27,10 @@ fun FlowContent.GenererTokenForm(
             select {
                 name = "konsumentId"
                 classes = setOf("navds-select__input")
+                attributes["_"] = "on load or change log my.selectedOptions.innerHTML[0] then set global heading.value to " +
+                        "`Generer nytt token for konsument: \${my.selectedOptions.innerHTML[0]}`" +
+                        "then set global body.value to " +
+                        "`Er du sikker på at du vil generere et nytt token for kosumenten: \${my.selectedOptions.innerHTML[0]}? Denne handlingen vil invalidere det eksisterende tokenet, og kan ikke angres.`"
                 konsumenter.forEach { konsument ->
                     option {
                         value = konsument.id.toString()
@@ -41,8 +48,13 @@ fun FlowContent.GenererTokenForm(
         }
 
         Button {
-            type = ButtonType.submit
+            type = ButtonType.button
             variant = ButtonVariant.PRIMARY
+            attributes["hx-get"] = "/modal"
+            attributes["hx-target"] = "#modalContent"
+            attributes["hx-swap"] = "beforeend"
+            attributes["hx-include"] = "#modalContent"
+            attributes["hx-indicator"] = "#modalContent"
             label = "Generer token"
         }
     }

@@ -16,7 +16,7 @@ enum class ButtonSize(val size: String) {
 }
 
 class ButtonProps {
-    var id: String = UUID.randomUUID().toString()
+    var id: String? = null
     var type: ButtonType = ButtonType.button
     var variant: ButtonVariant = ButtonVariant.PRIMARY
     var size: ButtonSize = ButtonSize.MEDIUM
@@ -27,7 +27,7 @@ class ButtonProps {
 fun FlowOrInteractiveContent.Button(block: ButtonProps.() -> Unit) {
     val props = ButtonProps().apply(block)
     button {
-        id = props.id
+        props.id?.let { id = it }
         classes = setOf("navds-button", "navds-button--${props.variant}", "navds-button--${props.size.size}")
         type = props.type
         props.attributes.forEach { (key, value) ->

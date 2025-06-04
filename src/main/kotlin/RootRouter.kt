@@ -3,6 +3,7 @@ package no.nav.pam.stilling.feed.admin
 import io.javalin.Javalin
 import io.javalin.http.Context
 import kotlinx.html.*
+import no.nav.pam.stilling.feed.admin.komponenter.Modal
 
 class RootRouter {
     fun setupRoutes(javalin: Javalin) {
@@ -10,6 +11,7 @@ class RootRouter {
         javalin.get("/konsument/opprett") { opprettKonsument(it) }
         javalin.get("/konsument") { finnKonsument(it) }
         javalin.get("/token/generer") { genererToken(it) }
+        javalin.get("/modal") { visModal(it) }
     }
 
     private fun opprettKonsument(ctx: Context) {
@@ -43,5 +45,17 @@ class RootRouter {
                 attributes["hx-trigger"] = "load"
             }
         })
+    }
+
+    private fun visModal(ctx: Context) = try {
+        val heading = requireNotNull(ctx.queryParam("heading")) { "Mangler heading parameter for modal" }
+        val body = requireNotNull(ctx.queryParam("body")) { "Mangler body parameter for modal" }
+        log.info("Viser modal med heading: $heading og body: $body")
+        ctx.html(createFragmentHTML().fragment { Modal {
+            this.heading = heading
+            this.body = body
+        } })
+    } catch (e: Exception) {
+        ctx.status(500).result("Error rendering modal: ${e.message}")
     }
 }

@@ -11,7 +11,7 @@ class TestApplicationContext(
     private val testEnv: MutableMap<String, String>,
 ) : ApplicationContext(testEnv) {
     val konsumentServiceMock = mockk<KonsumentService>()
-    override val konsumentRouter by lazy { KonsumentRouter(konsumentServiceMock) }
+    override val konsumentRouter by lazy { KonsumentRouter(konsumentServiceMock, httpClient, lokalBaseUrl) }
 
     val tokenServiceMock = mockk<TokenService>()
     override val tokenRouter by lazy { TokenRouter(tokenServiceMock, konsumentServiceMock) }

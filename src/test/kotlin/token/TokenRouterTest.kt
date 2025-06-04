@@ -49,7 +49,7 @@ class TokenRouterTest : TestRunningApplication() {
                     findAll("p") {
                         assertThat(size).isEqualTo(1)
                         assertThat(eachTagName).isEqualTo(listOf("p"))
-                        assertThat(text).isEqualTo("Velg konsument for å generere et token og en utfylt e-post.")
+                        assertThat(text).isEqualTo("Velg konsument for å generere et nytt token og en ferdig utfylt e-post.")
                     }
 
                     findAll("form") {
@@ -81,7 +81,7 @@ class TokenRouterTest : TestRunningApplication() {
                             }
                         }
 
-                        findAll("input") {
+                        findAll("input[name=expires]") {
                             assertThat(size).isEqualTo(1)
                             assertThat(first().attributes["name"]).isEqualTo("expires")
                             assertThat(first().attributes["type"]).isEqualTo("datetime-local")
@@ -90,7 +90,7 @@ class TokenRouterTest : TestRunningApplication() {
 
                         findAll("button") {
                             assertThat(size).isEqualTo(1)
-                            assertThat(first().attributes["type"]).isEqualTo("submit")
+                            assertThat(first().attributes["type"]).isEqualTo("button")
                         }
                     }
 
@@ -107,8 +107,10 @@ class TokenRouterTest : TestRunningApplication() {
     @Test
     fun `Skal generere token og e-post mal`() {
         val tokenRequest = TokenRequestDTO.genererTilfeldig()
+        val konsument = KonsumentDTO.genererTilfeldig().copy(id = tokenRequest.konsumentId)
         val token = "Noe beskrivende tekst her: Bearer 1234567890abcdef"
 
+        every { konsumentService.hentKonsumenter(tokenRequest.konsumentId.toString()) } returns listOf(konsument)
         every { tokenService.genererToken(tokenRequest) } returns token
         every { tokenService.genererOneTimeSecret(any()) } returns URI.create("https://example.com/one-time-secret")
         every { tokenService.oneTimeSecretPassphrase } returns "passphrase"
@@ -130,7 +132,7 @@ class TokenRouterTest : TestRunningApplication() {
                 htmlDocument {
                     findAll("h2") {
                         assertThat(size).isEqualTo(1)
-                        assertThat(text).isEqualTo("Token for konsument: ${tokenRequest.konsumentId}")
+                        assertThat(text).isEqualTo("Token for konsument: ${konsument.identifikator}")
                     }
 
                     findAll("p") {

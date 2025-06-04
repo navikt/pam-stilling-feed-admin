@@ -50,6 +50,8 @@ open class ApplicationContext(env: Map<String, String>) {
 
     val naisController = NaisController(healthService, prometheusRegistry)
 
+    val lokalBaseUrl = "http://localhost:3000"
+
     val stillingFeedKlient = StillingFeedKlient(
         stillingFeedBaseUrl = env.getValue("STILLING_FEED_BASE_URL"),
         stillingFeedToken = env.getValue("STILLING_FEED_ADMIN_TOKEN"),
@@ -67,7 +69,7 @@ open class ApplicationContext(env: Map<String, String>) {
     val rootRouter = RootRouter()
 
     open val konsumentService by lazy { KonsumentService(stillingFeedKlient, objectMapper) }
-    open val konsumentRouter by lazy { KonsumentRouter(konsumentService) }
+    open val konsumentRouter by lazy { KonsumentRouter(konsumentService, httpClient, lokalBaseUrl) }
 
     open val tokenService by lazy { TokenService(stillingFeedKlient, oneTimeSecretKlient) }
     open val tokenRouter by lazy { TokenRouter(tokenService, konsumentService) }
