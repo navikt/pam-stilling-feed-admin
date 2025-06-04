@@ -39,10 +39,15 @@ fun FlowContent.EpostMal(block: EpostMalProps.() -> Unit) {
     }
 
     Button {
+        val standardLabel = "Kopier e-postmal"
+        val kopiertLabel = "\u2713 Kopiert!"
         id = "kopierEpostmal"
         type = ButtonType.button
         variant = ButtonVariant.PRIMARY
-        attributes["onClick"] = "kopierTilUtklippstavle('#epostmal', '#kopierEpostmal', 'Kopier e-postmal')"
-        label = "Kopier e-postmal"
+        attributes["_"] = "on click queue last set :epost to #epostmal.textContent " +
+                          "then call the window's navigator's clipboard's writeText(:epost) " +
+                          "then set my.firstChild.textContent to '$kopiertLabel' " +
+                          "then wait 1 seconds then set my.firstChild.textContent to '$standardLabel'"
+        label = standardLabel
     }
 }

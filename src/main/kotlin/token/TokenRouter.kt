@@ -64,11 +64,16 @@ class TokenRouter(
             }
 
             Button {
+                val standardLabel = "Kopier token"
+                val kopiertLabel = "\u2713 Kopiert!"
                 id = "kopierToken"
                 type = ButtonType.button
                 variant = ButtonVariant.PRIMARY
-                attributes["onClick"] = "kopierTilUtklippstavle('#token', '#kopierToken', 'Kopier token')"
-                label = "Kopier token"
+                attributes["_"] = "on click queue last set :token to #token.value " +
+                        "then call the window's navigator's clipboard's writeText(:token) " +
+                        "then set my.firstChild.textContent to '$kopiertLabel' " +
+                        "then wait 1 seconds then set my.firstChild.textContent to '$standardLabel'"
+                label = standardLabel
             }
 
             EpostMal {
