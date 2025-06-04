@@ -27,7 +27,7 @@ fun FlowContent.GenererTokenForm(
             select {
                 name = "konsumentId"
                 classes = setOf("navds-select__input")
-                attributes["_"] = "on load or change log my.selectedOptions.innerHTML[0] then set global heading.value to " +
+                attributes["_"] = "on load or change set global heading.value to " +
                         "`Generer nytt token for konsument: \${my.selectedOptions.innerHTML[0]}`" +
                         "then set global body.value to " +
                         "`Er du sikker på at du vil generere et nytt token for kosumenten: \${my.selectedOptions.innerHTML[0]}? Denne handlingen vil invalidere det eksisterende tokenet, og kan ikke angres.`"
