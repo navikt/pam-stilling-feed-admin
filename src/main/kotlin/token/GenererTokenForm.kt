@@ -30,7 +30,7 @@ fun FlowContent.GenererTokenForm(
                 attributes["_"] = "on load or change log my.selectedOptions.innerHTML[0] then set global heading.value to " +
                         "`Generer nytt token for konsument: \${my.selectedOptions.innerHTML[0]}`" +
                         "then set global body.value to " +
-                        "`Er du sikker på at du vil generere et nytt token for kosumenten: \${my.selectedOptions.innerHTML[0]}? Denne handlingen invalidere det eksisterende tokenet, og kan ikke angres.`"
+                        "`Er du sikker på at du vil generere et nytt token for kosumenten: \${my.selectedOptions.innerHTML[0]}? Denne handlingen vil invalidere det eksisterende tokenet, og kan ikke angres.`"
                 konsumenter.forEach { konsument ->
                     option {
                         value = konsument.id.toString()
