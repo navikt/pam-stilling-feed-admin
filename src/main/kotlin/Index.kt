@@ -23,7 +23,7 @@ fun templateHTML(
             href = "/public/style.css"
         }
         script {
-            src = "/public/libs/htmx.org@2.0.8.min.js.min.js"
+            src = "/public/libs/htmx.org@2.0.8.min.js"
         }
         script {
             src = "/public/libs/hyperscript.org@0.9.14.min.js"
