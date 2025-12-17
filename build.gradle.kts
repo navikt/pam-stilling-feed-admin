@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import java.net.URI
 
 plugins {
     kotlin("jvm") version "2.1.10"
@@ -56,4 +57,35 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(21)
+}
+
+tasks.register("downloadFrontendDependencies") {
+    doLast {
+        val libsDir = file("src/main/resources/public/libs")
+        if (libsDir.exists()) {
+            libsDir.listFiles()?.forEach { it.delete() }
+        } else {
+            libsDir.mkdirs()
+        }
+        val dependencies = mapOf(
+            "htmx.org" to "2.0.4",
+            "hyperscript.org" to "0.9.14"
+        )
+        dependencies.forEach { (name, version) ->
+            val url = URI.create("https://unpkg.com/$name@$version").toURL()
+            val targetFile = File(libsDir, "$name.min.js")
+            if (!targetFile.exists()) {
+                println("Downloading $name@$version")
+                url.openStream().use { input ->
+                    targetFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named("processResources") {
+    dependsOn("downloadFrontendDependencies")
 }

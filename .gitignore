@@ -36,3 +36,6 @@ build
 
 # Ignorer lokal style fra aksel
 aksel.css
+
+# Ignorer nedlastede avhengigheter
+/src/main/resources/public/libs/
