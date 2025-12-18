@@ -23,13 +23,10 @@ fun templateHTML(
             href = "/public/style.css"
         }
         script {
-            src = "https://unpkg.com/htmx.org@2.0.4"
-            integrity = "sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
-            crossorigin = ScriptCrossorigin.anonymous
+            src = "/public/libs/htmx.org@2.0.8.min.js"
         }
         script {
-            src = "https://unpkg.com/hyperscript.org@0.9.14"
-            crossorigin = ScriptCrossorigin.anonymous
+            src = "/public/libs/hyperscript.org@0.9.14.min.js"
         }
         title { +title }
     }
