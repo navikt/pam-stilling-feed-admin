@@ -15,7 +15,8 @@ class TokenService(
 
     fun genererOneTimeSecret(token: String): URI {
         val oneTimeSecret = oneTimeSecretKlient.opprettSecret(token)
-        val metadata = oneTimeSecretKlient.hentMetadata(oneTimeSecret.record.metadata.identifier)
-        return URI.create(metadata.record.share_url)
+        //val metadata = oneTimeSecretKlient.hentMetadata(oneTimeSecret.record.metadata.identifier)
+        //return URI.create(metadata.record.share_url)
+        return URI.create("https://eu.onetimesecret.com/secret/${oneTimeSecret.record.secret.identifier}")
     }
 }

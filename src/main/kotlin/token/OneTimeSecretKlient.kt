@@ -30,18 +30,20 @@ class OneTimeSecretKlient(
             {
                 "secret": {
                     "secret": "${melding.trim()}",
+                    "kind": "conceal",
+                    "share_domain": "string",
                     "passphrase": "$passphrase",
                     "ttl": ${60 * 60 * 24 * 7}
                 }
             }
         """.trimIndent()
 
-        val response = sendPostRequest("/secret/conceal", requestBody)
+        val response = sendPostRequest("/guest/secret/conceal", requestBody)
 
         when (response.statusCode()) {
             HttpStatus.OK.code -> {
                 val oneTimeSecret = objectMapper.readValue<OneTimeSecretDTO>(response.body())
-                log.info("OneTimeSecret opprettet: ${oneTimeSecret.record?.metadata?.identifier}")
+                log.info("OneTimeSecret opprettet: ${oneTimeSecret.record?.secret?.identifier}")
                 return oneTimeSecret
             }
             else -> {
@@ -51,20 +53,6 @@ class OneTimeSecretKlient(
         }
     }
 
-    fun hentMetadata(identifier: String): OneTimeSecretMetadataDTO {
-        val response = sendGetRequest("/private/$identifier")
-
-        return when (response.statusCode()) {
-            HttpStatus.OK.code -> {
-                log.info("Henter metadata for OneTimeSecret: $identifier")
-                objectMapper.readValue<OneTimeSecretMetadataDTO>(response.body())
-            }
-            else -> {
-                log.error("Feil ved henting av metadata for OneTimeSecret $identifier: ${response.statusCode()} - ${response.body()}")
-                throw RuntimeException("Feil ved henting av metadata for OneTimeSecret $identifier: ${response.statusCode()} - ${response.body()}")
-            }
-        }
-    }
 
     private fun sendGetRequest(endepunkt: String) = httpClient.send(
         HttpRequest.newBuilder().uri(URI("$baseApiUrl$endepunkt")).GET().build(), BodyHandlers.ofString()
@@ -72,7 +60,8 @@ class OneTimeSecretKlient(
 
     private fun sendPostRequest(endepunkt: String, body: String) = httpClient.send(
         HttpRequest.newBuilder().uri(URI("$baseApiUrl$endepunkt"))
-            .header(Header.CONTENT_TYPE, ContentType.APPLICATION_JSON.mimeType).POST(BodyPublishers.ofString(body))
+            .header(Header.CONTENT_TYPE, ContentType.APPLICATION_JSON.mimeType)
+            .POST(BodyPublishers.ofString(body))
             .build(), BodyHandlers.ofString()
     )
 }
