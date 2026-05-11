@@ -27,8 +27,6 @@ spec:
     requests:
       cpu: 20m
       memory: 384Mi
-  secureLogs:
-    enabled: true
   observability:
     logging:
       destinations:
@@ -60,6 +58,8 @@ spec:
     outbound:
       rules:
         - application: pam-stilling-feed
+        - application: logging
+          namespace: nais-system
       external:
         - host: eu.onetimesecret.com
   envFrom:
