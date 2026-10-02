@@ -1,11 +1,14 @@
 package no.nav.pam.stilling.feed.admin
 
 import io.javalin.Javalin
+import io.javalin.config.JavalinConfig
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
 import io.javalin.json.JavalinJackson
 import io.javalin.micrometer.MicrometerPlugin
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+import io.opentelemetry.instrumentation.api.semconv.http.HttpServerRoute
+import io.opentelemetry.instrumentation.api.semconv.http.HttpServerRouteSource
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.pam.stilling.feed.admin.sikkerhet.ForbiddenException
 import no.nav.pam.stilling.feed.admin.sikkerhet.JavalinAccessManager
@@ -30,23 +33,20 @@ fun main() {
 fun ApplicationContext.startApp(): Javalin {
     val accessManager = JavalinAccessManager()
 
-    val javalin = startJavalin(
+    return startJavalin(
         port = 3000,
         jsonMapper = JavalinJackson(objectMapper),
         meterRegistry = prometheusRegistry,
         accessManager = accessManager,
+        setupRoutes = { config -> setupAllRoutes(config) },
     )
-
-    setupAllRoutes(javalin)
-
-    return javalin
 }
 
-private fun ApplicationContext.setupAllRoutes(javalin: Javalin) {
-    naisController.setupRoutes(javalin)
-    rootRouter.setupRoutes(javalin)
-    konsumentRouter.setupRoutes(javalin)
-    tokenRouter.setupRoutes(javalin)
+private fun ApplicationContext.setupAllRoutes(config: JavalinConfig) {
+    naisController.setupRoutes(config)
+    rootRouter.setupRoutes(config)
+    konsumentRouter.setupRoutes(config)
+    tokenRouter.setupRoutes(config)
 }
 
 fun startJavalin(
@@ -54,6 +54,7 @@ fun startJavalin(
     jsonMapper: JavalinJackson,
     meterRegistry: PrometheusMeterRegistry,
     accessManager: JavalinAccessManager,
+    setupRoutes: (JavalinConfig) -> Unit,
 ): Javalin {
     val requestLogger = LoggerFactory.getLogger("access")
     val micrometerPlugin = MicrometerPlugin { micrometerConfig ->
@@ -78,32 +79,51 @@ fun startJavalin(
             staticFiles.directory = "/public"
             staticFiles.hostedPath = "/public"
         })
-    }.beforeMatched { ctx ->
-        if (ctx.routeRoles().isEmpty()) {
-            return@beforeMatched
+
+        setupRoutes(config)
+
+        config.routes.before { ctx ->
+            val callId = ctx.header("Nav-Call-Id") ?: ctx.header("Nav-CallId") ?: UUID.randomUUID().toString()
+            ctx.attribute("TraceId", callId)
+            MDC.put("TraceId", callId)
         }
-        accessManager.manage(ctx, ctx.routeRoles())
-    }.before { ctx ->
-        val callId = ctx.header("Nav-Call-Id") ?: ctx.header("Nav-CallId") ?: UUID.randomUUID().toString()
-        ctx.attribute("TraceId", callId)
-        MDC.put("TraceId", callId)
-    }.after {
-        MDC.remove("TraceId")
-    }.exception(ClassNotFoundException::class.java) { e, ctx ->
-        log.warn("NotFoundException: ${e.message}", e)
-        ctx.status(HttpStatus.NOT_FOUND).result(e.message ?: "")
-    }.exception(ForbiddenException::class.java) { e, ctx ->
-        log.warn("ForbiddenException: ${e.message}", e)
-        ctx.status(HttpStatus.FORBIDDEN).result(e.message ?: "")
-    }.exception(UnauthorizedException::class.java) { e, ctx ->
-        log.warn("UnauthorizedException: ${e.message}", e)
-        ctx.status(HttpStatus.UNAUTHORIZED).result(e.message ?: "")
-    }.exception(IllegalArgumentException::class.java) { e, ctx ->
-        log.warn("IllegalArgumentException: ${e.message}", e)
-        ctx.status(HttpStatus.BAD_REQUEST).result(e.message ?: "")
-    }.exception(Exception::class.java) { e, ctx ->
-        log.error("Exception: ${e.message}", e)
-        ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result(e.message ?: "")
+        config.routes.beforeMatched { ctx ->
+            ctx.endpoints().matchedHttpEndpoint()?.let { endepunkt ->
+                HttpServerRoute.update(
+                    io.opentelemetry.context.Context.current(),
+                    HttpServerRouteSource.NESTED_CONTROLLER,
+                    endepunkt.path
+                )
+            }
+            val roles = ctx.routeRoles()
+            if (roles.isNotEmpty()) {
+                accessManager.manage(ctx, roles)
+            }
+        }
+        config.routes.after {
+            MDC.remove("TraceId")
+        }
+
+        config.routes.exception(ClassNotFoundException::class.java) { e, ctx ->
+            log.warn("NotFoundException: ${e.message}", e)
+            ctx.status(HttpStatus.NOT_FOUND).result(e.message ?: "")
+        }
+        config.routes.exception(ForbiddenException::class.java) { e, ctx ->
+            log.warn("ForbiddenException: ${e.message}", e)
+            ctx.status(HttpStatus.FORBIDDEN).result(e.message ?: "")
+        }
+        config.routes.exception(UnauthorizedException::class.java) { e, ctx ->
+            log.warn("UnauthorizedException: ${e.message}", e)
+            ctx.status(HttpStatus.UNAUTHORIZED).result(e.message ?: "")
+        }
+        config.routes.exception(IllegalArgumentException::class.java) { e, ctx ->
+            log.warn("IllegalArgumentException: ${e.message}", e)
+            ctx.status(HttpStatus.BAD_REQUEST).result(e.message ?: "")
+        }
+        config.routes.exception(Exception::class.java) { e, ctx ->
+            log.error("Exception: ${e.message}", e)
+            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result(e.message ?: "")
+        }
     }.start(port)
 }
 

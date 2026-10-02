@@ -30,6 +30,7 @@ val jacksonVersion = "2.22.3"
 dependencies {
     implementation("io.javalin:javalin:$javalinVersion")
     implementation("io.javalin:javalin-micrometer:$javalinVersion")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.31.1")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.12.0")
 
     implementation("io.micrometer:micrometer-core:$micrometerVersion")
@@ -49,6 +50,17 @@ dependencies {
     testImplementation("it.skrape:skrapeit:1.2.2")
     testImplementation("org.assertj:assertj-core:4.0.0-M1")
     testImplementation("io.mockk:mockk:1.14.11")
+}
+
+val skrapeitKompatibelCoroutinesVersjon = "1.6.4"
+
+configurations.testRuntimeClasspath {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlinx" && requested.name.startsWith("kotlinx-coroutines")) {
+            useVersion(skrapeitKompatibelCoroutinesVersjon)
+            because("skrapeit 1.2.2 bruker Ktor 1.x, som krever klasser fjernet i kotlinx-coroutines 1.7")
+        }
+    }
 }
 
 tasks.test {

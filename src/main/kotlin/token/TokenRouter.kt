@@ -1,6 +1,6 @@
 package no.nav.pam.stilling.feed.admin.token
 
-import io.javalin.Javalin
+import io.javalin.config.JavalinConfig
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
 import kotlinx.html.*
@@ -20,9 +20,9 @@ class TokenRouter(
         val log: Logger = LoggerFactory.getLogger(TokenRouter::class.java)
     }
 
-    fun setupRoutes(javalin: Javalin) {
-        javalin.get("/token/form") { lastInnTokenForm(it) }
-        javalin.post("/token/generer") { hånterGenererToken(it) }
+    fun setupRoutes(config: JavalinConfig) {
+        config.routes.get("/token/form") { lastInnTokenForm(it) }
+        config.routes.post("/token/generer") { hånterGenererToken(it) }
     }
 
     private fun lastInnTokenForm(ctx: Context) {
