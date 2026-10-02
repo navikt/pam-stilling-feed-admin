@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java21:latest@sha256:26a517c7f7d69a98adab4d1e71d5a3a9f1079c85ac9c4193ce6b6bd3d73496f3
+FROM gcr.io/distroless/java25-debian13:latest@sha256:1d7a0cea4653f62be34a5b9b1da82a4dd097ae8935d1d3f4ab84146e0396fd2b
 
 COPY build/libs/pam-stilling-feed-admin-all.jar ./app.jar
 ENV JAVA_OPTS="-XX:-OmitStackTraceInFastThrow -Xms256m -Xmx2304m"
