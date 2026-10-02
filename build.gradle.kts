@@ -1,8 +1,5 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     kotlin("jvm") version "2.4.20"
-    id("com.gradleup.shadow") version "9.6.1"
     application
 }
 
@@ -16,11 +13,6 @@ repositories {
 
 tasks.test {
     useJUnitPlatform()
-}
-
-tasks.withType<ShadowJar> {
-    archiveFileName.set("pam-stilling-feed-admin-all.jar")
-    mergeServiceFiles()
 }
 
 val javalinVersion = "7.2.3"

@@ -2,4 +2,4 @@
 java = "25"
 
 [tasks.build]
-run = "./gradlew clean build"
+run = "./gradlew clean build installDist"
