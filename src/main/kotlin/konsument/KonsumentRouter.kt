@@ -1,6 +1,6 @@
 package no.nav.pam.stilling.feed.admin.konsument
 
-import io.javalin.Javalin
+import io.javalin.config.JavalinConfig
 import io.javalin.http.Context
 import kotlinx.html.*
 import no.nav.pam.stilling.feed.admin.createFragmentHTML
@@ -23,11 +23,11 @@ class KonsumentRouter(
         private val log: Logger = LoggerFactory.getLogger(KonsumentRouter::class.java)
     }
 
-    fun setupRoutes(javalin: Javalin) {
-        javalin.get("/konsument/sok") { lastInnFinnKonsument(it) }
-        javalin.get("/konsument/tabell") { håndterKonsumentTabell(it) }
-        javalin.get("/konsument/form") { lastInnKonsumentForm(it) }
-        javalin.post("/konsument/opprett") { håndterOpprettKonsument(it) }
+    fun setupRoutes(config: JavalinConfig) {
+        config.routes.get("/konsument/sok") { lastInnFinnKonsument(it) }
+        config.routes.get("/konsument/tabell") { håndterKonsumentTabell(it) }
+        config.routes.get("/konsument/form") { lastInnKonsumentForm(it) }
+        config.routes.post("/konsument/opprett") { håndterOpprettKonsument(it) }
     }
 
     private fun lastInnFinnKonsument(ctx: Context) {

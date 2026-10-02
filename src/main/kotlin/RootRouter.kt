@@ -1,17 +1,17 @@
 package no.nav.pam.stilling.feed.admin
 
-import io.javalin.Javalin
+import io.javalin.config.JavalinConfig
 import io.javalin.http.Context
 import kotlinx.html.*
 import no.nav.pam.stilling.feed.admin.komponenter.Modal
 
 class RootRouter {
-    fun setupRoutes(javalin: Javalin) {
-        javalin.get("/") { it.redirect("/konsument") }
-        javalin.get("/konsument/opprett") { opprettKonsument(it) }
-        javalin.get("/konsument") { finnKonsument(it) }
-        javalin.get("/token/generer") { genererToken(it) }
-        javalin.get("/modal") { visModal(it) }
+    fun setupRoutes(config: JavalinConfig) {
+        config.routes.get("/") { it.redirect("/konsument") }
+        config.routes.get("/konsument/opprett") { opprettKonsument(it) }
+        config.routes.get("/konsument") { finnKonsument(it) }
+        config.routes.get("/token/generer") { genererToken(it) }
+        config.routes.get("/modal") { visModal(it) }
     }
 
     private fun opprettKonsument(ctx: Context) {

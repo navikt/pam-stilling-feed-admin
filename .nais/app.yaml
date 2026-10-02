@@ -26,6 +26,9 @@ spec:
       cpu: 20m
       memory: 384Mi
   observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
     logging:
       destinations:
         - id: loki
