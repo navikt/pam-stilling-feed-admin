@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.4.20"
+    kotlin("jvm") version "2.4.21"
     application
 }
 
@@ -22,13 +22,13 @@ val jacksonVersion = "2.22.3"
 dependencies {
     implementation("io.javalin:javalin:$javalinVersion")
     implementation("io.javalin:javalin-micrometer:$javalinVersion")
-    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.31.1")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.32.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.12.0")
 
     implementation("io.micrometer:micrometer-core:$micrometerVersion")
     implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
 
-    implementation("ch.qos.logback:logback-classic:1.6.4")
+    implementation("ch.qos.logback:logback-classic:1.6.5")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
     implementation("com.papertrailapp:logback-syslog4j:1.0.0")
     implementation("org.codehaus.janino:janino:3.1.12")
