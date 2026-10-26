@@ -17,7 +17,7 @@ tasks.test {
 
 val javalinVersion = "7.2.3"
 val micrometerVersion = "1.17.1"
-val jacksonVersion = "2.22.3"
+val jacksonVersion = "2.22.4"
 
 dependencies {
     implementation("io.javalin:javalin:$javalinVersion")
@@ -36,7 +36,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
-    implementation("com.auth0:java-jwt:4.6.1")
+    implementation("com.auth0:java-jwt:4.6.2")
 
     testImplementation(kotlin("test"))
     testImplementation("it.skrape:skrapeit:1.2.2")
