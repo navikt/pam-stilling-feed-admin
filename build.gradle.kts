@@ -22,7 +22,7 @@ val jacksonVersion = "2.22.4"
 dependencies {
     implementation("io.javalin:javalin:$javalinVersion")
     implementation("io.javalin:javalin-micrometer:$javalinVersion")
-    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.33.0")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.33.1")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.12.0")
 
     implementation("io.micrometer:micrometer-core:$micrometerVersion")
