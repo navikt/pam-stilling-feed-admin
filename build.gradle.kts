@@ -17,7 +17,7 @@ tasks.test {
 
 val javalinVersion = "7.2.4"
 val micrometerVersion = "1.17.2"
-val jacksonVersion = "2.22.4"
+val jacksonVersion = "2.23.0"
 
 dependencies {
     implementation("io.javalin:javalin:$javalinVersion")
@@ -41,7 +41,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("it.skrape:skrapeit:1.2.2")
     testImplementation("org.assertj:assertj-core:4.0.0-M1")
-    testImplementation("io.mockk:mockk:1.14.11")
+    testImplementation("io.mockk:mockk:1.14.12")
 }
 
 val skrapeitKompatibelCoroutinesVersjon = "1.6.4"
